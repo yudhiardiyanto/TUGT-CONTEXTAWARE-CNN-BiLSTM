@@ -83,7 +83,7 @@ The available Stage 2 dataset is a participant-level CSV with **30 rows and 83 c
 | `duration_STS`, `duration_WO`, `duration_TR`, `duration_WI`, `duration_STTS` | TUG phase durations | **No** |
 | `total_tug_time` | Overall TUG completion time; basis for the study's risk-category definition | **No** |
 | `temperature`, `humidity`, `light_intensity`, `pressure` | Environmental context | Yes |
-| `age`, `height_cm`, `weight_kg`, `bmi`, `body_temperature`, `mean_spo2`, `mean_heart_rate` | Individual-level measurements | Yes |
+| `age`, `height_cm`, `weight_kg`, `bmi`, `body_temperature`, `mean_spo2`, `mean_heart_rate` | Physiological, Demographic & Anthropometric Data | Yes |
 | `skel_emb_000` ... `skel_emb_063` | Learned skeletal embeddings | Yes |
 | `fall_risk` | TUG-derived target label (`HIGH` or `LOW/NO`) | Target only |
 
