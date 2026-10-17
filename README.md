@@ -68,8 +68,8 @@ Four feature configurations are evaluated:
 |---|---|---:|
 | Skeleton | Learned skeletal embeddings | 64 |
 | Skeleton + Context | Skeletal embeddings + environmental context | 68 |
-| Skeleton + Physiological | Skeletal embeddings + individual-level variables | 71 |
-| All Features | Skeletal embeddings + context + individual-level variables | 75 |
+| Skeleton + Physiological | Skeletal embeddings + Physiological, Demographic & Anthropometric Data variables | 71 |
+| All Features | Skeletal embeddings + context + Physiological, Demographic & Anthropometric Data variables | 75 |
 
 The name **Physiological** is retained for consistency with the experiment, although this group includes physiological, anthropometric, and demographic measurements.
 
