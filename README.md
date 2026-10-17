@@ -41,7 +41,7 @@ flowchart TD
     C3 --> D
     D --> E["64-dimensional skeletal embeddings"]
 
-    E --> H["STAGE 2: Feature Configurations"]
+    E --> H["STAGE 2: Feature Configurations (Skeleton Only Embedding)"]
     P2 --> H
     IND --> H
     H --> I["LR / SVM-RBF / RF / GB / MLP"]
