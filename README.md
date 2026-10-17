@@ -1,4 +1,3 @@
-# TUGT-CONTEXTAWARE-CNN-BiLSTM
 # Two-Stage Multimodal Timed Up and Go (TUG) Assessment Framework
 
 **Repository:** [TUGT-CONTEXTAWARE-CNN-BiLSTM](https://github.com/yudhiardiyanto/TUGT-CONTEXTAWARE-CNN-BiLSTM)
@@ -13,25 +12,50 @@ This repository accompanies research on a **two-stage multimodal framework** for
 
 ```mermaid
 flowchart TD
-    A[Recorded TUG movement / skeletal sequences] --> B[Preprocessing and sequence preparation]
-    B --> C[Stage 1: CNN-BiLSTM 3 Model input: Skeleton only, Skeleton + Context (Late Fusion),  Skeleton + Context (attention Fusion)]
-    C --> D[Five TUG movement phases]
-    C --> E[64-dimensional skeletal embeddings]
-    F[Environmental context: 4 variables] --> H[Stage 2: Feature configurations]
-    G[Individual-level measurements: 7 variables] --> H
-    E --> H
-    H --> I[LR / SVM-RBF / RF / GB / MLP]
-    I --> J[LOSO-CV: TUG-derived HIGH vs LOW/NO]
-    J --> K[Performance evaluation]
-    I --> L[SHAP: global, group-level, and individual explanations]
+    subgraph ACQ["1. DATA ACQUISITION"]
+        direction LR
+        A1["A. RGB TUG Videos<br/>RGB video: 30 FPS<br/>Skeleton data: 32 joints / 33 landmarks<br/>Sit–Stand–Walk–Turn–Return"]
+        A2["B. Environmental Sensor Data<br/>Temperature · Humidity · Light intensity<br/>Pressure · GPS location"]
+        A3["C. Physiological, Demographic & Anthropometric Data<br/>Heart rate · SpO₂ · Body temperature<br/>Age · Sex · BMI"]
+    end
+
+    A1 --> EX["2. SKELETON EXTRACTION<br/>MediaPipe Pose: 33 landmarks<br/>(x, y, z coordinates)"]
+    A2 --> CTX["3. CONTEXT DATA ACQUISITION<br/>Time-aligned environmental data<br/>(synchronized with video)"]
+    A3 --> IND["Individual-level measurements"]
+
+    subgraph PRE["4. DATA PREPROCESSING"]
+        direction LR
+        P1["A. Skeleton Preprocessing<br/>Joint selection and normalization<br/>Missing-value handling<br/>Temporal smoothing<br/>30-frame sequence windows (~1 s)<br/>Min–max feature scaling"]
+        P2["B. Context Data Processing<br/>Missing-value handling<br/>Interpolation<br/>Feature scaling (standardization)"]
+    end
+    EX --> P1
+    CTX --> P2
+
+    P1 --> C["STAGE 1: CNN-BiLSTM — Three Model Configurations"]
+    P2 --> C
+    C --> C1["Skeleton Only"]
+    C --> C2["Skeleton + Context: Late Fusion"]
+    C --> C3["Skeleton + Context: Attention Fusion"]
+    C1 --> D["Five TUG movement phases"]
+    C2 --> D
+    C3 --> D
+    D --> E["64-dimensional skeletal embeddings"]
+
+    E --> H["STAGE 2: Feature Configurations"]
+    P2 --> H
+    IND --> H
+    H --> I["LR / SVM-RBF / RF / GB / MLP"]
+    I --> J["LOSO-CV: TUG-derived HIGH vs LOW/NO"]
+    J --> K["Performance evaluation"]
+    I --> L["SHAP: group-level, global, and individual explanations"]
 ```
 
 ### Stage 1 — TUG phase classification
 
 - Input: skeletal motion sequences from TUG recordings.
-- Model: CNN-BiLSTM.
+- Model: CNN-BiLSTM evaluated in three configurations: **Skeleton Only**, **Skeleton + Context (Late Fusion)**, and **Skeleton + Context (Attention Fusion)**.
 - Phase labels: **Sit-to-Stand (STS), Walk Out (WO), Turn (TR), Walk In (WI), and Stand-to-Sit (STTS)**.
-- Intermediate output: **64-dimensional learned skeletal embeddings**.
+- Intermediate output used downstream: **64-dimensional learned skeletal embeddings**. The released code should specify which Stage 1 configuration generated these embeddings.
 - Intended data split: **70% training, 20% validation, and 10% testing**, using `GroupShuffleSplit` with participant identifiers as groups, **provided this matches the released Stage 1 implementation**. Group splitting does not itself guarantee stratification by phase.
 
 ### Stage 2 — TUG-derived risk classification
