@@ -14,7 +14,7 @@ This repository accompanies research on a **two-stage multimodal framework** for
 ```mermaid
 flowchart TD
     A[Recorded TUG movement / skeletal sequences] --> B[Preprocessing and sequence preparation]
-    B --> C[Stage 1: CNN-BiLSTM]
+    B --> C[Stage 1: CNN-BiLSTM 3 Model input: Skeleton only, Skeleton + Context (Late Fusion),  Skeleton + Context (attention Fusion)]
     C --> D[Five TUG movement phases]
     C --> E[64-dimensional skeletal embeddings]
     F[Environmental context: 4 variables] --> H[Stage 2: Feature configurations]
